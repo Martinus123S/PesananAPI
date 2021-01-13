@@ -1,7 +1,7 @@
 const Order = require('../model/order');
 
 const getOrder = async(req,res)=>{
-    const result = await Order.find({userId:req.params.id})
+    const result = await Order.find()
     .then(data=>{
         console.log(data);
         res.json(data).status(200);
@@ -16,19 +16,19 @@ const saveOrder = async(req,res)=>{
     const order = new Order({
         userId: req.body.userId,
         name: req.body.name,
-        orderFood:[{
-            nameFood:req.body.foodname,
-            price:req.body.price,
-            jlh_pesan:req.body.foodjumlah
-        }],
-        orderDrink:[{
-            nameDrink:req.body.drinkname,
-            price:req.body.drinkprice,
-            jlh_pesan:req.body.jlh_pesan
-        }],
         status:req.body.status,
         totalHarga:req.body.totalHarga
     });
+    order.orderFood = [{
+            nameFood:req.body.foodname,
+            price:req.body.price,
+            jlh_pesan:req.body.foodjumlah
+    }];
+    order.orderDrink =[{
+        nameDrink:req.body.drinkname,
+        price:req.body.drinkprice,
+        jlh_pesan:req.body.jlh_pesan
+    }];
     // console.log(order);
     await order.save(function(err){
         if(err){
