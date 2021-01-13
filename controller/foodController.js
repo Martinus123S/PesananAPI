@@ -30,8 +30,10 @@ const saveOrder = function(req,res){
         totalHarga:req.body.totalHarga
     });
     order.save(function(err){
-        if(err)
-            res.send(err)
+        if(err){
+            res.send(err).status(400);
+            throw new Error("TIdak berhasil Disimpan")
+        }
         res.send({
             status:"200",
             data:"Berhasil menyimpan data"
