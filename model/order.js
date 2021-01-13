@@ -60,8 +60,14 @@ const OrderSchema = Schema({
             }
         }
     ],
-    status:Number,
-    totalHarga:Number
+    status:{
+        type:Number,
+        required:false
+    },
+    totalHarga:{
+        type:Number,
+        required:false
+    },
 });
 
 module.exports = mongoose.model('Order',OrderSchema);

@@ -17,12 +17,12 @@ const saveOrder = function(req,res){
         userId: req.body.userId,
         name: req.body.name,
         orderFood:[{
-            name:req.body.foodname,
+            nameFood:req.body.foodname,
             price:req.body.price,
             jlh_pesan:req.body.foodjumlah
         }],
         orderDrink:[{
-            name:req.body.drinkname,
+            nameDrink:req.body.drinkname,
             price:req.body.drinkprice,
             jlh_pesan:req.body.jlh_pesan
         }],
