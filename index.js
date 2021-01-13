@@ -16,4 +16,4 @@ router.route('/users')
 app.put('/users/:id',foodController.updateOrder);
 app.use(cors());
 app.use(router);
-app.listen(3000);
+app.listen((process.env.PORT || 3000));
