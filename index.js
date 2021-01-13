@@ -1,4 +1,11 @@
-require('./connection/connection');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise
+mongoose.connect(process.env.MONGO_DB,{useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>{
+    console.log("Database is Connect");
+}).catch(err=>{
+    console.log(err);
+})
 const cors = require('cors');
 const foodController = require('./controller/foodController');
 var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
