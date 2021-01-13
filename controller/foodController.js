@@ -1,68 +1,42 @@
-const Order = require('../model/order');
+const foodModel = require('../model/food');
 
-const getOrder = async(req,res)=>{
-    const result = await Order.find()
+const getAllFood = async(req,res)=>{
+    await foodModel.find()
     .then(data=>{
-        console.log(data);
-        res.json(data).status(200);
+        res.send(data).status(200);
+    }).catch((error)=>{
+        res.send(error.message).status(400);
     })
-    .catch(err=>{
-        res.json(err).status(400);
+}
+const createFood = async(req,res)=>{
+    const food = new foodModel(req.body);
+    await food.save()
+    .then(data=>{
+        res.send({
+            message:"Data Berhasil Ditambahkan",
+            data:data
+        }).status(200);
+    }).catch(err=>{
+        res.send(err.message).status(404);
     })
 }
 
-const saveOrder = async(req,res)=>{
-    // console.log(req.body);
-    const order = new Order({
-        userId: req.body.userId,
-        name: req.body.name,
-        status:req.body.status,
-        totalHarga:req.body.totalHarga
-    });
-    order.orderFood = [{
-            nameFood:req.body.foodname,
-            price:req.body.price,
-            jlh_pesan:req.body.foodjumlah
-    }];
-    order.orderDrink =[{
-        nameDrink:req.body.drinkname,
-        price:req.body.drinkprice,
-        jlh_pesan:req.body.jlh_pesan
-    }];
-    // console.log(order);
-    await order.save(function(err){
-        if(err){
-            res.send(err.message).status(400);
-            throw new Error(err.message)
+const findOne = async(req,res)=>{
+    const food = foodModel.findOne({_id:req.params.foodId})
+    .then(data=>{
+        if(!data){
+            res.send({
+                message:"Food not found for id"+req.body.foodId
+            })
         }
-        return res.send({
-            status:"200",
-            data:"Berhasil menyimpan data"
-        });
-    });
+        res.send(data).status(200);
+    }).catch(err=>{
+        res.send(err.message).status(404);
+    })
 }
 
-const updateOrder = function(req,res){
-        Order.findById(req.params.id,function(err,data){
-            if(err)
-            {
-                res.send({
-                data : "Data Tidak ada",
-            }).status(404);
-                throw new Error("Data Tidak ada");
-                
-            }
-
-        })
-    
+module.exports = {
+    getAllFood,
+    findOne,
+    createFood
 }
-
-// const deleteOrder = function(req,res){
-//     Order.deleteOne({_id:req.params.id},function(err){
-//         if(err)
-//             res.send(err);
-//     })
-// }
-
-
-module.exports = {getOrder,saveOrder,updateOrder};

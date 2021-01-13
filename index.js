@@ -1,20 +1,24 @@
 require('./connection/connection');
-const cors = require('cors');
-const foodController = require('./controller/foodController');
 
 const express = require('express');
 const {Router} = require('express');
 const router = express.Router();
 const app = express();
+// router.get('/',function(req,res){
+const cors = require('cors');
+const orderController = require('./controller/orderController');
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-// router.get('/',function(req,res){
+require('./routes/foodRoutes')(app);
+// const foodRoutes = 
 //     console.log("Work");
 // });
-router.route('/users')
-.get(foodController.getOrder)
-.post(foodController.saveOrder);
-app.put('/users/:id',foodController.updateOrder);
+router.route('/order')
+.get(orderController.getOrder)
+.post(orderController.saveOrder);
+router.put('/order/:id',orderController.updateOrder);
 app.use(cors());
 app.use(router);
 app.listen((process.env.PORT || 3000));
