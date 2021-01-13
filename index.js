@@ -6,6 +6,8 @@ const router = express.Router();
 const app = express();
 // router.get('/',function(req,res){
 const cors = require('cors');
+
+app.use(cors());
 const orderController = require('./controller/orderController');
 
 
@@ -19,6 +21,5 @@ router.route('/order')
 .get(orderController.getOrder)
 .post(orderController.saveOrder);
 router.put('/order/:id',orderController.updateOrder);
-app.use(cors());
 app.use(router);
 app.listen((process.env.PORT || 3000));
