@@ -1,7 +1,7 @@
 const Order = require('../model/order');
 
-const getOrder = function(req,res){
-    const result = Order.find({userId:req.params.id})
+const getOrder = async(req,res)=>{
+    const result = await Order.find({userId:req.params.id})
     .then(data=>{
         console.log(data);
         res.json(data).status(200);
@@ -11,7 +11,7 @@ const getOrder = function(req,res){
     })
 }
 
-const saveOrder = function(req,res){
+const saveOrder = async(req,res)=>{
     // console.log(req.body);
     const order = new Order({
         userId: req.body.userId,
@@ -30,7 +30,7 @@ const saveOrder = function(req,res){
         totalHarga:req.body.totalHarga
     });
     // console.log(order);
-    order.save(function(err){
+    await order.save(function(err){
         if(err){
             res.send(err.message).status(400);
             throw new Error(err.message)
