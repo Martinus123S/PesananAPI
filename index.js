@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise
+var server_port =  process.env.PORT || 3000;
+var server_host = process.env.YOUR_HOST || '0.0.0.0';
 mongoose.connect(process.env.MONGO_DB,{useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
     console.log("Database is Connect");
 }).catch(err=>{
     console.log(err);
 })
+const connection = mongoose.connection;
+connection.once("open",function(){
+    console.log("Server is running on Port: " + server_port);
+})
 const cors = require('cors');
 const foodController = require('./controller/foodController');
-var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
-var server_host = process.env.YOUR_HOST || '0.0.0.0';
 const express = require('express');
 const {Router} = require('express');
 const router = express.Router();
