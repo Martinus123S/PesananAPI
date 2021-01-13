@@ -1,7 +1,7 @@
 const Order = require('../model/order');
 
 const getOrder = function(req,res){
-    const result = Order.find({userId:req.params._id})
+    const result = Order.find({userId:req.params.id})
     .then(data=>{
         console.log(data);
         res.json(data).status(200);
