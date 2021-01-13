@@ -14,6 +14,7 @@ const getOrder = function(req,res){
 const saveOrder = function(req,res){
     // console.log(req.body);
     const order = new Order({
+        userId: req.body.userId,
         name: req.body.name,
         orderFood:[{
             name:req.body.foodname,
@@ -48,7 +49,7 @@ const updateOrder = function(req,res){
                 throw new Error("Data Tidak ada");
                 
             }
-            
+
         })
     
 }
