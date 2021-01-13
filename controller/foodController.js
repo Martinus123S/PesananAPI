@@ -29,15 +29,16 @@ const saveOrder = function(req,res){
         status:req.body.status,
         totalHarga:req.body.totalHarga
     });
+    console.log(order);
     order.save(function(err){
         if(err){
             res.send(err).status(400);
             throw new Error("TIdak berhasil Disimpan")
         }
-        res.send({
+        return res.send({
             status:"200",
             data:"Berhasil menyimpan data"
-        })
+        });
     });
 }
 
