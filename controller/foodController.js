@@ -35,8 +35,19 @@ const findOne = async(req,res)=>{
     })
 }
 
+const updateFood = async(req,res)=>{
+    const food = foodModel.findOneAndUpdate({_id:req.params.foodId},req.body,{new : true})
+    .then(data=>{
+        res.send(data).status(201);
+    })
+    .catch(err=>{
+        res.send(err.message).status(404);
+    })
+}
+
 module.exports = {
     getAllFood,
     findOne,
-    createFood
+    createFood,
+    updateFood
 }

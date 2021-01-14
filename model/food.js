@@ -12,6 +12,10 @@ const Food = Schema({
     stock:{
         type:Number,
         required:true,
+    },
+    type:{
+        type:String,
+        required:true,
     }
 });
 

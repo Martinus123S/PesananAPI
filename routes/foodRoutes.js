@@ -6,5 +6,7 @@ app.route('/food')
 .get(foodController.getAllFood)
 .post(foodController.createFood);
 
-app.get('/food/:foodId',foodController.findOne)
+app.route('/food/:foodId')
+.get(foodController.findOne)
+.put(foodController.updateFood);
 }
