@@ -15,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 require('./routes/foodRoutes')(app);
 require('./routes/roomRoutes')(app);
+require('./routes/pulsaRoutes')(app);
+require('./routes/userRoutes')(app);
 // const foodRoutes = 
 //     console.log("Work");
 // });
@@ -23,4 +25,4 @@ router.route('/order')
 .post(orderController.saveOrder);
 router.put('/order/:id',orderController.updateOrder);
 app.use(router);
-app.listen((process.env.PORT || 3000));
+app.listen((process.env.PORT || 3001));
