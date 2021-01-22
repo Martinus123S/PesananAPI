@@ -1,5 +1,4 @@
 require('./connection/connection');
-
 const orderController = require('./controller/orderController');
 const express = require('express');
 const {Router} = require('express');
@@ -8,10 +7,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(cors());
-app.use(express.json());
 // router.get('/',function(req,res){
-
 app.use(express.urlencoded({extended:true}));
 require('./routes/foodRoutes')(app);
 require('./routes/roomRoutes')(app);

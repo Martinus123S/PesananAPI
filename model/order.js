@@ -11,6 +11,10 @@ const OrderSchema = Schema({
                 type:String,
                 required:false
             },
+            nama:{
+                type:String,
+                required:false,
+            },
             price:{
                 type:Number,
                 required:false,
