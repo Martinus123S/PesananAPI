@@ -10,6 +10,7 @@ const getAllFood = async(req,res)=>{
 }
 const createFood = async(req,res)=>{
     const food = new foodModel(req.body);
+    console.log(food);
     await food.save()
     .then(data=>{
         res.send({
