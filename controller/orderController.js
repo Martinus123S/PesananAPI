@@ -1,5 +1,5 @@
 const Order = require('../model/order');
-
+const Food = require('../model/food')
 const getOrder = async(req,res)=>{
     console.log(req.body);
     await Order.findOne({userId:req.query.user_id})
@@ -28,7 +28,7 @@ const saveOrder = async(req,res)=>{
                 totalHarga:req.body.total
             });
             order.product = [{
-                idProduct:products,
+                idProduct:req.body._id,
                 nama:req.body.nama,
                 price:req.body.total,
                 jlh_pesan:req.body.pesanan
@@ -38,6 +38,7 @@ const saveOrder = async(req,res)=>{
                     res.send(err.message).status(400);
                     throw new Error(err.message)
                 }
+                Food.findOneAndUpdate({_id:req.body._id},{stockLaku:req.body.pesanan},{new:true});
                 return res.send({
                     status:"200",
                     data:"Berhasil menyimpan data"
