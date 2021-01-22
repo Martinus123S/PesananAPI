@@ -1,45 +1,86 @@
 const Order = require('../model/order');
 
 const getOrder = async(req,res)=>{
-    const result = await Order.find()
+    console.log(req.body);
+    await Order.findOne({userId:req.query.user_id})
     .then(data=>{
-        console.log(data);
-        res.json(data).status(200);
+        if(!data){
+            throw new Error("message");
+        }
+
+        res.status(200).json(data);
     })
     .catch(err=>{
-        res.json(err).status(400);
+        console.log(err.message)
     })
 }
 
 const saveOrder = async(req,res)=>{
     // console.log(req.body);
-    const order = new Order({
-        userId: req.body.userId,
-        name: req.body.name,
-        status:req.body.status,
-        totalHarga:req.body.totalHarga
-    });
-    order.orderFood = [{
-            nameFood:req.body.foodname,
-            price:req.body.price,
-            jlh_pesan:req.body.foodjumlah
-    }];
-    order.orderDrink =[{
-        nameDrink:req.body.drinkname,
-        price:req.body.drinkprice,
-        jlh_pesan:req.body.jlh_pesan
-    }];
-    // console.log(order);
-    await order.save(function(err){
-        if(err){
-            res.send(err.message).status(400);
-            throw new Error(err.message)
+    const products = req.body._id;
+    console.log(req.body.iduser);
+    await Order.findOne({userId:req.body.iduser})
+    .then((ord)=>{
+        if(!ord){
+            const order = new Order({
+                userId:req.body.iduser,
+                status:1,
+                totalHarga:req.body.total
+            });
+            order.product = [{
+                idProduct:products,
+                nama:req.body.nama,
+                price:req.body.total,
+                jlh_pesan:req.body.pesanan
+            }];
+            order.save(function(err){
+                if(err){
+                    res.send(err.message).status(400);
+                    throw new Error(err.message)
+                }
+                return res.send({
+                    status:"200",
+                    data:"Berhasil menyimpan data"
+                });
+            });
         }
-        return res.send({
-            status:"200",
-            data:"Berhasil menyimpan data"
-        });
-    });
+        console.log("yes")
+        const orderIndex = ord.product.findIndex((orders)=>{
+            return orders.idProduct.toString() === products
+        })
+        console.log("yes")
+        let newQuantity = req.body.pesanan;
+        console.log("yes")
+        let total = req.body.total;
+        console.log("yes")
+        const updateOrder = [...ord.product];
+        if(orderIndex >= 0){
+            updateOrder[orderIndex].jlh_pesan = newQuantity;
+            updateOrder[orderIndex].price = total;
+        }else{
+            updateOrder.push({
+                idProduct:products,
+                nama:req.body.nama,
+                price:req.body.total,
+                jlh_pesan:newQuantity
+            })
+            console.log(updateOrder);
+        }
+        ord.status = 1;
+        let totalSemua = 0;
+        for(var product in updateOrder){
+            console.log(updateOrder[product].price)
+            totalSemua+=updateOrder[product].price;
+        }
+        console.log(totalSemua)
+        ord.totalHarga = totalSemua;
+        ord.product = updateOrder;
+        res.status(200).send("Oke");
+        return ord.save();
+    }).catch(err=>{
+        console.log(err.message);
+    })
+    // console.log(order);
 }
 
 const updateOrder = function(req,res){

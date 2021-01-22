@@ -38,6 +38,7 @@ const findOne = async(req,res)=>{
 const updateFood = async(req,res)=>{
     const food = foodModel.findOneAndUpdate({_id:req.params.foodId},req.body,{new : true})
     .then(data=>{
+        console.log(data);
         res.send(data).status(201);
     })
     .catch(err=>{

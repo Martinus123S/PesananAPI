@@ -10,6 +10,11 @@ const Room = Schema({
         type:String,
         required:true,
     },
+    capacity:{
+        type:Number,
+        required:true,
+    },
+    
 })
 
 module.exports = mongoose.model("Room",Room);
